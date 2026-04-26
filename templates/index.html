@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardioAI — Heart Attack Risk Prediction</title>
+    <meta name="description" content="AI-Powered Heart Attack Risk Prediction & Clinical Decision Support System">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                             2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                             C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+                             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#hg)" />
+                    <defs>
+                        <linearGradient id="hg" x1="2" y1="3" x2="22" y2="21">
+                            <stop offset="0%" stop-color="#ef4444" />
+                            <stop offset="100%" stop-color="#dc2626" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">CardioAI</span>
+                <span class="brand-sub">Decision Support</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="dashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                <span>Dashboard</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a href="#" class="nav-item" data-section="patient-form">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+                    <rect x="8" y="2" width="8" height="4" rx="1" />
+                </svg>
+                <span>Patient Form</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a href="#" class="nav-item" data-section="results">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                <span>Prediction Result</span>
+                <div class="nav-indicator"></div>
+            </a>
+            <a href="#" class="nav-item" data-section="history">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 8v4l3 3" />
+                    <circle cx="12" cy="12" r="10" />
+                </svg>
+                <span>History</span>
+                <div class="nav-indicator"></div>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="doctor-badge">
+                <div class="doctor-avatar">DR</div>
+                <div><span class="doctor-name">Doctor</span><span class="doctor-role">Cardiologist</span></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile header -->
+    <header class="mobile-header" id="mobileHeader">
+        <button class="hamburger" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+        <span class="mobile-title">CardioAI</span>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+
+        <!-- DASHBOARD -->
+        <section class="section active" id="sectionDashboard">
+            <div class="section-header animate-in">
+                <div class="dash-header-row">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p class="section-desc">Welcome to the AI-Powered Heart Attack Risk Prediction System</p>
+                    </div>
+                    <div class="dash-clock" id="dashClock">
+                        <div class="clock-time" id="clockTime">--:--</div>
+                        <div class="clock-date" id="clockDate">---</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="dash-stats animate-in d1">
+                <div class="stat-card stat-card--total" id="statTotal">
+                    <div class="stat-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statTotalVal">0</span>
+                        <span class="stat-label">Total Assessments</span>
+                    </div>
+                    <div class="stat-trend stat-trend--up" id="statTotalTrend">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+                        <span id="statTotalTrendText">Active</span>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--high" id="statHigh">
+                    <div class="stat-icon stat-icon--red">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statHighVal">0</span>
+                        <span class="stat-label">High Risk Cases</span>
+                    </div>
+                    <div class="stat-pulse-dot stat-pulse-dot--red"></div>
+                </div>
+                <div class="stat-card stat-card--low" id="statLow">
+                    <div class="stat-icon stat-icon--green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statLowVal">0</span>
+                        <span class="stat-label">Low Risk Cases</span>
+                    </div>
+                    <div class="stat-pulse-dot stat-pulse-dot--green"></div>
+                </div>
+                <div class="stat-card stat-card--avg">
+                    <div class="stat-icon stat-icon--purple">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="16"/>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="statAvgVal">0%</span>
+                        <span class="stat-label">Avg Risk Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dash-grid animate-in d2">
+                <!-- Left Column -->
+                <div class="dash-grid-left">
+                    <!-- Action Cards -->
+                    <div class="dash-actions">
+                        <div class="dash-card dash-card--blue" onclick="navigateTo('patient-form')">
+                            <div class="dash-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.5">
+                                    <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
+                                    <rect x="8" y="2" width="8" height="4" rx="1" />
+                                </svg></div>
+                            <h3>New Assessment</h3>
+                            <p>Enter patient health data for risk prediction</p>
+                            <span class="dash-card-arrow">→</span>
+                            <div class="card-shine"></div>
+                        </div>
+                        <div class="dash-card dash-card--green" onclick="navigateTo('results')">
+                            <div class="dash-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.5">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                </svg></div>
+                            <h3>Latest Result</h3>
+                            <p id="dashResultText">No prediction yet</p>
+                            <span class="dash-card-arrow">→</span>
+                            <div class="card-shine"></div>
+                        </div>
+                        <div class="dash-card dash-card--purple" onclick="navigateTo('history')">
+                            <div class="dash-card-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 8v4l3 3" />
+                                    <circle cx="12" cy="12" r="10" />
+                                </svg></div>
+                            <h3>History</h3>
+                            <p id="dashHistoryText">0 records</p>
+                            <span class="dash-card-arrow">→</span>
+                            <div class="card-shine"></div>
+                        </div>
+                    </div>
+
+                    <!-- Live Heartbeat Monitor -->
+                    <div class="card dash-heartbeat-card animate-in d3">
+                        <div class="card-title-row">
+                            <h2 class="card-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                </svg>Live Cardiac Monitor
+                            </h2>
+                            <div class="monitor-live-badge">
+                                <span class="live-dot"></span> LIVE
+                            </div>
+                        </div>
+                        <div class="ecg-monitor" id="ecgMonitor">
+                            <canvas id="ecgCanvas" width="600" height="150"></canvas>
+                        </div>
+                        <div class="ecg-stats">
+                            <div class="ecg-stat">
+                                <span class="ecg-stat-label">Heart Rate</span>
+                                <span class="ecg-stat-value" id="ecgBpm">72 <small>bpm</small></span>
+                            </div>
+                            <div class="ecg-stat">
+                                <span class="ecg-stat-label">Status</span>
+                                <span class="ecg-stat-value ecg-status-normal" id="ecgStatus">Normal Sinus</span>
+                            </div>
+                            <div class="ecg-stat">
+                                <span class="ecg-stat-label">SpO₂</span>
+                                <span class="ecg-stat-value" id="ecgSpo2">98<small>%</small></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="dash-grid-right">
+                    <!-- Risk Distribution Chart -->
+                    <div class="card dash-chart-card">
+                        <h2 class="card-title">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.21 15.89A10 10 0 118 2.83" /><path d="M22 12A10 10 0 0012 2v10z" />
+                            </svg>Risk Distribution
+                        </h2>
+                        <div class="donut-chart-wrap">
+                            <svg viewBox="0 0 160 160" class="donut-chart" id="donutChart">
+                                <circle cx="80" cy="80" r="60" fill="none" stroke="#e2e8f0" stroke-width="20" />
+                                <circle cx="80" cy="80" r="60" fill="none" stroke="#ef4444" stroke-width="20"
+                                    stroke-dasharray="376.99" stroke-dashoffset="376.99"
+                                    stroke-linecap="round" id="donutHigh" class="donut-segment" />
+                                <circle cx="80" cy="80" r="60" fill="none" stroke="#22c55e" stroke-width="20"
+                                    stroke-dasharray="376.99" stroke-dashoffset="376.99"
+                                    stroke-linecap="round" id="donutLow" class="donut-segment" />
+                            </svg>
+                            <div class="donut-center">
+                                <span class="donut-total" id="donutTotal">0</span>
+                                <span class="donut-label">Total</span>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item">
+                                <span class="legend-dot legend-dot--red"></span>
+                                <span>High Risk</span>
+                                <span class="legend-count" id="legendHigh">0</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-dot legend-dot--green"></span>
+                                <span>Low Risk</span>
+                                <span class="legend-count" id="legendLow">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card dash-recent-card animate-in d4">
+                        <div class="card-title-row">
+                            <h2 class="card-title">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/>
+                                </svg>Recent Assessments
+                            </h2>
+                            <button class="btn-link" onclick="navigateTo('history')">View All →</button>
+                        </div>
+                        <div class="recent-list" id="recentList">
+                            <div class="recent-empty">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" opacity="0.3">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                                </svg>
+                                <span>No assessments yet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row - Health Tips + Quick Start -->
+            <div class="dash-bottom-row animate-in d3">
+                <!-- Health Tips Carousel -->
+                <div class="card dash-tips-card">
+                    <div class="card-title-row">
+                        <h2 class="card-title">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12.01" y2="8"/>
+                            </svg>Health Tips
+                        </h2>
+                        <div class="tips-nav">
+                            <button class="tips-btn" id="tipPrev">‹</button>
+                            <span class="tips-counter" id="tipCounter">1 / 5</span>
+                            <button class="tips-btn" id="tipNext">›</button>
+                        </div>
+                    </div>
+                    <div class="tips-carousel" id="tipsCarousel">
+                        <div class="tip-slide active" data-tip="0">
+                            <div class="tip-emoji">❤️</div>
+                            <h4>Monitor Blood Pressure</h4>
+                            <p>Regular BP monitoring can reduce heart attack risk by up to 50%. Aim for &lt;120/80 mmHg.</p>
+                        </div>
+                        <div class="tip-slide" data-tip="1">
+                            <div class="tip-emoji">🏃</div>
+                            <h4>Stay Active</h4>
+                            <p>Just 30 minutes of moderate exercise 5 days a week can significantly reduce cardiovascular risk.</p>
+                        </div>
+                        <div class="tip-slide" data-tip="2">
+                            <div class="tip-emoji">🥗</div>
+                            <h4>Heart-Healthy Diet</h4>
+                            <p>A Mediterranean diet rich in fruits, vegetables, and omega-3 fatty acids protects your heart.</p>
+                        </div>
+                        <div class="tip-slide" data-tip="3">
+                            <div class="tip-emoji">😴</div>
+                            <h4>Quality Sleep</h4>
+                            <p>7-9 hours of quality sleep per night helps regulate heart rate and blood pressure naturally.</p>
+                        </div>
+                        <div class="tip-slide" data-tip="4">
+                            <div class="tip-emoji">🧘</div>
+                            <h4>Manage Stress</h4>
+                            <p>Chronic stress elevates cortisol levels, increasing heart disease risk. Try meditation or yoga.</p>
+                        </div>
+                    </div>
+                    <div class="tips-dots" id="tipsDots">
+                        <span class="tip-dot active" data-dot="0"></span>
+                        <span class="tip-dot" data-dot="1"></span>
+                        <span class="tip-dot" data-dot="2"></span>
+                        <span class="tip-dot" data-dot="3"></span>
+                        <span class="tip-dot" data-dot="4"></span>
+                    </div>
+                </div>
+
+                <!-- Quick Start -->
+                <div class="card dash-quick-start">
+                    <h3>Quick Start Guide</h3>
+                    <div class="steps-col">
+                        <div class="step-item-v">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <span class="step-title">Enter Patient Data</span>
+                                <span class="step-sub">Fill in clinical parameters</span>
+                            </div>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-item-v">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <span class="step-title">AI Analyzes Risk</span>
+                                <span class="step-sub">ML model processes data</span>
+                            </div>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-item-v">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <span class="step-title">Review Results</span>
+                                <span class="step-sub">View risk score & factors</span>
+                            </div>
+                        </div>
+                        <div class="step-connector"></div>
+                        <div class="step-item-v">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <span class="step-title">Download Report</span>
+                                <span class="step-sub">Export PDF for records</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-start-assessment" onclick="navigateTo('patient-form')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Start New Assessment
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PATIENT FORM -->
+        <section class="section" id="sectionPatientForm">
+            <div class="section-header animate-in">
+                <h1>Patient Assessment</h1>
+                <p class="section-desc">Enter patient health parameters for risk evaluation</p>
+            </div>
+            <form id="predictionForm" novalidate>
+                <div class="card form-group-card animate-in d1">
+                    <h2 class="card-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>Personal Information</h2>
+                    <div class="form-row">
+                        <div class="form-field form-field--full">
+                            <label for="patient_name">Patient Name <span class="unit">(required)</span></label>
+                            <input type="text" id="patient_name" name="patient_name" placeholder="e.g. John Doe"
+                                required autocomplete="off">
+                            <span class="hint">Full name of the patient</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label for="age">Age <span class="unit">(years)</span></label><input
+                                type="number" id="age" name="age" min="1" max="120" placeholder="e.g. 55" required><span
+                                class="hint">1 – 120</span></div>
+                        <div class="form-field"><label for="sex">Sex</label><select id="sex" name="sex" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">Female</option>
+                                <option value="1">Male</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="card form-group-card animate-in d2">
+                    <h2 class="card-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>Cardiac &amp; Clinical Data</h2>
+                    <div class="form-row">
+                        <div class="form-field"><label for="chest_pain_type">Chest Pain Type</label><select
+                                id="chest_pain_type" name="chest_pain_type" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">Typical Angina</option>
+                                <option value="1">Atypical Angina</option>
+                                <option value="2">Non-anginal Pain</option>
+                                <option value="3">Asymptomatic</option>
+                            </select></div>
+                        <div class="form-field"><label for="resting_bp">Resting Blood Pressure <span class="unit">(mm
+                                    Hg)</span></label><input type="number" id="resting_bp" name="resting_bp" min="50"
+                                max="250" placeholder="e.g. 130" required><span class="hint">50 – 250</span></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label for="cholesterol">Cholesterol <span
+                                    class="unit">(mg/dL)</span></label><input type="number" id="cholesterol"
+                                name="cholesterol" min="50" max="600" placeholder="e.g. 240" required><span
+                                class="hint">50 – 600</span></div>
+                        <div class="form-field"><label for="fasting_blood_sugar">Fasting Blood Sugar &gt; 120
+                                mg/dL</label><select id="fasting_blood_sugar" name="fasting_blood_sugar" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label for="resting_ecg">Resting ECG</label><select id="resting_ecg"
+                                name="resting_ecg" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">Normal</option>
+                                <option value="1">ST-T Abnormality</option>
+                                <option value="2">LV Hypertrophy</option>
+                            </select></div>
+                        <div class="form-field"><label for="max_heart_rate">Max Heart Rate <span
+                                    class="unit">(bpm)</span></label><input type="number" id="max_heart_rate"
+                                name="max_heart_rate" min="50" max="250" placeholder="e.g. 150" required><span
+                                class="hint">50 – 250</span></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field"><label for="exercise_angina">Exercise-Induced Angina</label><select
+                                id="exercise_angina" name="exercise_angina" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select></div>
+                        <div class="form-field"><label for="oldpeak">Oldpeak <span class="unit">(ST
+                                    depression)</span></label><input type="number" id="oldpeak" name="oldpeak" min="-5"
+                                max="10" step="0.1" placeholder="e.g. 1.5" required><span class="hint">-5.0 –
+                                10.0</span></div>
+                    </div>
+                    <div class="form-row form-row--half">
+                        <div class="form-field"><label for="st_slope">ST Slope</label><select id="st_slope"
+                                name="st_slope" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">Upsloping</option>
+                                <option value="1">Flat</option>
+                                <option value="2">Downsloping</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="form-actions animate-in d3">
+                    <button type="submit" id="predictBtn" class="btn btn-primary btn-lg">
+                        <svg class="btn-heart" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                        </svg>
+                        Analyze Risk
+                    </button>
+                    <button type="button" id="resetBtn" class="btn btn-ghost">Reset Form</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="section" id="sectionResults">
+            <div class="section-header animate-in">
+                <h1>Prediction Result</h1>
+                <p class="section-desc">AI-generated risk assessment and insights</p>
+            </div>
+            <!-- Empty -->
+            <div id="resultsEmpty" class="empty-state">
+                <div class="empty-icon"><svg width="56" height="56" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1" opacity="0.3">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg></div>
+                <h3>No Prediction Yet</h3>
+                <p>Complete the patient form to generate a risk assessment.</p>
+                <button class="btn btn-primary" onclick="navigateTo('patient-form')">Go to Patient Form</button>
+            </div>
+            <!-- Loading with heartbeat -->
+            <div id="resultsLoading" class="loading-state hidden">
+                <div class="heartbeat-wrap">
+                    <svg class="heartbeat-svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                            fill="#ef4444" />
+                    </svg>
+                    <div class="hb-ring"></div>
+                    <div class="hb-ring r2"></div>
+                </div>
+                <p>Analyzing patient data<span class="loading-dots"></span></p>
+            </div>
+            <!-- Results content -->
+            <div id="resultsContent" class="hidden">
+                <div class="results-top animate-in">
+                    <div class="card result-risk-card"><span class="result-label">Risk Level</span>
+                        <div id="riskBadge" class="risk-badge">—</div><span id="resultTimestamp"
+                            class="result-ts"></span>
+                    </div>
+                    <div class="card result-prob-card"><span class="result-label">Risk Probability</span>
+                        <div class="gauge"><svg viewBox="0 0 160 160" class="gauge-svg">
+                                <circle cx="80" cy="80" r="68" class="gauge-bg" />
+                                <circle cx="80" cy="80" r="68" class="gauge-fill" id="gaugeFill"
+                                    stroke-dasharray="427.26" stroke-dashoffset="427.26" />
+                            </svg>
+                            <div class="gauge-center"><span id="gaugeValue" class="gauge-val">0%</span><span
+                                    class="gauge-lbl">Risk Score</span></div>
+                        </div>
+                    </div>
+                    <div class="card result-conf-card"><span class="result-label">Confidence</span><span
+                            id="confidenceValue" class="conf-val">—</span>
+                        <div class="conf-bar-wrap">
+                            <div class="conf-bar" id="confBar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card factors-card animate-in d1">
+                    <h2 class="card-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                        </svg>Top Contributing Factors</h2>
+                    <p id="factorsSummary" class="factors-summary"></p>
+                    <div class="factors-list" id="factorsList"></div>
+                </div>
+                <div class="card whatif-card animate-in d2">
+                    <div class="card-title-row">
+                        <h2 class="card-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M12 20V10M18 20V4M6 20v-4" />
+                            </svg>What-If Analysis</h2><span class="badge badge-orange">Interactive</span>
+                    </div>
+                    <p class="whatif-desc">Adjust parameters to see how risk changes in real time.</p>
+                    <div id="whatifControls" class="whatif-grid"></div>
+                    <div id="whatifResult" class="whatif-result hidden">
+                        <div class="whatif-compare">
+                            <div class="wf-box wf-orig"><span class="wf-lbl">Original</span><span id="whatifOrigProb"
+                                    class="wf-val">—</span></div>
+                            <div class="wf-arrow">→</div>
+                            <div class="wf-box wf-new"><span class="wf-lbl">Modified</span><span id="whatifNewProb"
+                                    class="wf-val">—</span></div><span id="whatifDelta" class="wf-delta">—</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card recs-card animate-in d3">
+                    <h2 class="card-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>Recommendations</h2>
+                    <ul id="recsList" class="recs-list"></ul>
+                </div>
+                <div class="result-actions animate-in d4">
+                    <button id="downloadReport" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                        </svg>Download PDF Report</button>
+                    <button class="btn btn-ghost" onclick="navigateTo('patient-form')">New Patient</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- HISTORY -->
+        <section class="section" id="sectionHistory">
+            <div class="section-header animate-in">
+                <h1>Patient Records</h1>
+                <p class="section-desc">Browse, search, and filter all past patient assessments</p>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="card history-filters animate-in d1" id="historyFilters">
+                <div class="hf-row hf-row--top">
+                    <div class="hf-search-wrap">
+                        <svg class="hf-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="historySearch" class="hf-search" placeholder="Search by patient name..."
+                            autocomplete="off">
+                    </div>
+                    <div class="hf-sort-wrap">
+                        <label class="hf-sort-label">Sort:</label>
+                        <select id="historySort" class="hf-sort-select">
+                            <option value="desc">Latest First</option>
+                            <option value="asc">Oldest First</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hf-row hf-row--dates">
+                    <div class="hf-date-presets">
+                        <button class="hf-preset active" data-preset="all">All Time</button>
+                        <button class="hf-preset" data-preset="today">Today</button>
+                        <button class="hf-preset" data-preset="yesterday">Yesterday</button>
+                        <button class="hf-preset" data-preset="7days">Last 7 Days</button>
+                        <button class="hf-preset" data-preset="30days">Last 30 Days</button>
+                        <button class="hf-preset" data-preset="custom">Custom Range</button>
+                    </div>
+                    <div class="hf-custom-range hidden" id="customDateRange">
+                        <div class="hf-date-field">
+                            <label>From</label>
+                            <input type="date" id="historyDateFrom">
+                        </div>
+                        <div class="hf-date-field">
+                            <label>To</label>
+                            <input type="date" id="historyDateTo">
+                        </div>
+                        <button class="btn btn-primary btn-sm" id="applyCustomDate">Apply</button>
+                    </div>
+                </div>
+                <div class="hf-row hf-row--info">
+                    <span class="hf-count" id="historyCount">0 records found</span>
+                </div>
+            </div>
+
+            <!-- Empty state -->
+            <div id="historyEmpty" class="empty-state hidden">
+                <div class="empty-icon"><svg width="56" height="56" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1" opacity="0.3">
+                        <path d="M12 8v4l3 3" />
+                        <circle cx="12" cy="12" r="10" />
+                    </svg></div>
+                <h3>No Records Found</h3>
+                <p>Predictions will appear here after assessments are completed.</p>
+            </div>
+
+            <!-- Loading -->
+            <div id="historyLoading" class="loading-state hidden">
+                <div class="heartbeat-wrap" style="transform:scale(.7)">
+                    <svg class="heartbeat-svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                            fill="#ef4444" />
+                    </svg>
+                    <div class="hb-ring"></div>
+                    <div class="hb-ring r2"></div>
+                </div>
+                <p>Loading records<span class="loading-dots"></span></p>
+            </div>
+
+            <!-- Table -->
+            <div class="card history-card hidden" id="historyCard">
+                <div class="table-wrap">
+                    <table class="history-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Patient Name</th>
+                                <th>Date & Time</th>
+                                <th>Age</th>
+                                <th>Sex</th>
+                                <th>Result</th>
+                                <th>Probability</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <button class="pg-btn pg-prev" id="pgPrev" disabled>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="15 18 9 12 15 6" />
+                        </svg>
+                        Previous
+                    </button>
+                    <div class="pg-numbers" id="pgNumbers"></div>
+                    <button class="pg-btn pg-next" id="pgNext" disabled>
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sidebar overlay mobile -->
+    <div class="sidebar-overlay hidden" id="sidebarOverlay"></div>
+    <!-- Toast -->
+    <div class="toast hidden" id="toast"><span id="toastMsg"></span></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>
